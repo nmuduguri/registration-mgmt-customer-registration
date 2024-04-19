@@ -11,10 +11,6 @@ public interface CustomerRegistrationRepository extends JpaRepository<CustomerRe
 	
 	public CustomerRegistration findByEmail(String email);
 	
-	// select * from customer_repository;
-	// select * from customer-registration where email = "test@gmail.com";
-	
-	
 	// 1. Try to update addhar pdf file;
 	// 2. Change h2-db to sql db
 
