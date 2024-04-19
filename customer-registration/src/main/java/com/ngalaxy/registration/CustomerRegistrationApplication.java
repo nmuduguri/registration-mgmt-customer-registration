@@ -9,6 +9,7 @@ public class CustomerRegistrationApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CustomerRegistrationApplication.class, args);
 		System.out.println("Customer Registration Application Started..");
+		System.out.println("Started..");
 	}
 
 }
