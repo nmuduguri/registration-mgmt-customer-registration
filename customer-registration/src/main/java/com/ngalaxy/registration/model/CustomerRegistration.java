@@ -1,5 +1,6 @@
 package com.ngalaxy.registration.model;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
@@ -16,26 +17,28 @@ public class CustomerRegistration {
 	private String lname;
 	private String email;
 	private String mobile;
-	private String pinCode;
+	private String pincode;
 	private String city;
 	private String adharNo;
-	private String adharFile;
+	private String adharFileName;
+	private byte[] adharFile;
 
 	public CustomerRegistration() {
 		super();
 	}
 
 	public CustomerRegistration(String fname, String lname, String email, String mobile, String pinCode, String city,
-			String adharNo, String addharFile) {
+			String adharNo, String addharFile, byte[] adharFileContent) {
 		super();
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
 		this.mobile = mobile;
-		this.pinCode = pinCode;
+		this.pincode = pinCode;
 		this.city = city;
 		this.adharNo = adharNo;
-		this.adharFile = addharFile;
+		this.adharFileName = addharFile;
+		this.adharFile = adharFileContent;
 	}
 
 	public Integer getCustId() {
@@ -79,11 +82,11 @@ public class CustomerRegistration {
 	}
 
 	public String getPinCode() {
-		return pinCode;
+		return pincode;
 	}
 
 	public void setPinCode(String pinCode) {
-		this.pinCode = pinCode;
+		this.pincode = pinCode;
 	}
 
 	public String getCity() {
@@ -103,23 +106,36 @@ public class CustomerRegistration {
 	}
 
 	public String getAdharFile() {
+		return adharFileName;
+	}
+
+	public void setAdharFileName(String adharFileName) {
+		this.adharFileName = adharFileName;
+	}
+
+	public byte[] getAdharFileContent() {
 		return adharFile;
 	}
 
-	public void setAdharFile(String addharFile) {
-		this.adharFile = addharFile;
+	public void setAdharFileContent(byte[] adharFileContent) {
+		this.adharFile = adharFileContent;
 	}
 
 	@Override
 	public String toString() {
 		return "CustomerRegistration [custId=" + custId + ", fname=" + fname + ", lname=" + lname + ", email=" + email
-				+ ", mobile=" + mobile + ", pinCode=" + pinCode + ", city=" + city + ", adharNo=" + adharNo
-				+ ", addharFile=" + adharFile + "]";
+				+ ", mobile=" + mobile + ", pinCode=" + pincode + ", city=" + city + ", adharNo=" + adharNo
+				+ ", adharFileName=" + adharFileName + ", adharFileContent=" + Arrays.toString(adharFile) + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(adharFile, adharNo, city, custId, email, fname, lname, mobile, pinCode);
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(adharFile);
+		result = prime * result
+				+ Objects.hash(adharFileName, adharNo, city, custId, email, fname, lname, mobile, pincode);
+		return result;
 	}
 
 	@Override
@@ -131,11 +147,12 @@ public class CustomerRegistration {
 		if (getClass() != obj.getClass())
 			return false;
 		CustomerRegistration other = (CustomerRegistration) obj;
-		return Objects.equals(adharFile, other.adharFile) && Objects.equals(adharNo, other.adharNo)
+		return Arrays.equals(adharFile, other.adharFile)
+				&& Objects.equals(adharFileName, other.adharFileName) && Objects.equals(adharNo, other.adharNo)
 				&& Objects.equals(city, other.city) && Objects.equals(custId, other.custId)
 				&& Objects.equals(email, other.email) && Objects.equals(fname, other.fname)
 				&& Objects.equals(lname, other.lname) && Objects.equals(mobile, other.mobile)
-				&& Objects.equals(pinCode, other.pinCode);
+				&& Objects.equals(pincode, other.pincode);
 	}
 
 }

@@ -1,44 +1,38 @@
 package com.ngalaxy.registration.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ngalaxy.registration.model.CustomerRegistration;
 import com.ngalaxy.registration.response.CustomerRegistrationResponse;
-import com.ngalaxy.registration.service.CustomerRegistrationService;
+import com.ngalaxy.registration.service.CustomerRegistrationWriterService;
 
 @RestController
 @RequestMapping("/api/registration-mgmt")
-public class CustomerRegistrationController {
+public class CustomerRegistrationWriterController {
 	@Autowired
-	CustomerRegistrationService customerRegistrationService;
+	CustomerRegistrationWriterService customerRegistrationWriterService;
 
 	@PostMapping("/customer-registration")
-	public ResponseEntity<CustomerRegistrationResponse> saveCustomerRegistration(@RequestBody CustomerRegistration customer) {
+	public ResponseEntity<CustomerRegistrationResponse> saveCustomerRegistration(
+			@RequestBody CustomerRegistration customer, @RequestParam("file") MultipartFile adharFile) {
 		return new ResponseEntity<CustomerRegistrationResponse>(
-				customerRegistrationService.saveCustomerRegistration(customer), HttpStatus.OK);
-	}
-
-	@GetMapping("/customer-registration")
-	public ResponseEntity<List<CustomerRegistration>> getRegisteredCustomers() {
-		return new ResponseEntity<List<CustomerRegistration>>(customerRegistrationService.getRegisteredCustomers(),
-				HttpStatus.OK);
+				customerRegistrationWriterService.saveCustomerRegistration(customer, adharFile), HttpStatus.OK);
 	}
 
 	@PutMapping("/customer-registration")
 	public ResponseEntity<CustomerRegistrationResponse> updateMethod(
-			@RequestBody CustomerRegistration customerRegistration) {
+			@RequestBody CustomerRegistration customerRegistration, @RequestParam("file") MultipartFile adharFile) {
 
 		return new ResponseEntity<CustomerRegistrationResponse>(
-				customerRegistrationService.updateCustomerRegistration(customerRegistration), HttpStatus.OK);
+				customerRegistrationWriterService.updateCustomerRegistration(customerRegistration, adharFile), HttpStatus.OK);
 	}
 }

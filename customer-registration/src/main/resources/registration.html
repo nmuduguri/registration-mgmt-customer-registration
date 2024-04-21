@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Registration</title>
+</head>
+<body>
+    <h2>User Registration</h2>
+    <form id="registrationForm">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email"><br>
+        <!-- Add other fields as needed -->
+        <input type="button" value="Register" onclick="registerUser()">
+    </form>
+
+    <div id="message"></div>
+
+    <script>
+        function registerUser() {
+            var username = document.getElementById("username").value;
+            var email = document.getElementById("email").value;
+            // You can add more fields here if needed
+
+            var data = {
+                "username": username,
+                "email": email
+                // Add more fields as needed
+            };
+
+            // Make AJAX POST request to Spring Boot API
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://localhost:8080/register", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        document.getElementById("message").innerText = xhr.responseText;
+                    } else {
+                        document.getElementById("message").innerText = "Failed to register user";
+                    }
+                }
+            };
+
+            xhr.send(JSON.stringify(data));
+        }
+    </script>
+</body>
+</html>
