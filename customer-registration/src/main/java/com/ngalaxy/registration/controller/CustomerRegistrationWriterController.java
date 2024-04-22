@@ -3,9 +3,9 @@ package com.ngalaxy.registration.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,16 +23,19 @@ public class CustomerRegistrationWriterController {
 
 	@PostMapping("/customer-registration")
 	public ResponseEntity<CustomerRegistrationResponse> saveCustomerRegistration(
-			@RequestBody CustomerRegistration customer, @RequestParam("file") MultipartFile adharFile) {
+			@ModelAttribute("customer") CustomerRegistration customer,
+			@RequestParam("adharFile") MultipartFile adharFile) {
 		return new ResponseEntity<CustomerRegistrationResponse>(
 				customerRegistrationWriterService.saveCustomerRegistration(customer, adharFile), HttpStatus.OK);
 	}
 
 	@PutMapping("/customer-registration")
 	public ResponseEntity<CustomerRegistrationResponse> updateMethod(
-			@RequestBody CustomerRegistration customerRegistration, @RequestParam("file") MultipartFile adharFile) {
+			@ModelAttribute("customer") CustomerRegistration customerRegistration,
+			@RequestParam("adharFile") MultipartFile adharFile) {
 
 		return new ResponseEntity<CustomerRegistrationResponse>(
-				customerRegistrationWriterService.updateCustomerRegistration(customerRegistration, adharFile), HttpStatus.OK);
+				customerRegistrationWriterService.updateCustomerRegistration(customerRegistration, adharFile),
+				HttpStatus.OK);
 	}
 }

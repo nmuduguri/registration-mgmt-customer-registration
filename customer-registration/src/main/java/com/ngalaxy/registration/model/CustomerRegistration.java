@@ -6,6 +6,7 @@ import java.util.Objects;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 
 @Entity
 public class CustomerRegistration {
@@ -21,20 +22,21 @@ public class CustomerRegistration {
 	private String city;
 	private String adharNo;
 	private String adharFileName;
+	@Lob
 	private byte[] adharFile;
 
 	public CustomerRegistration() {
 		super();
 	}
 
-	public CustomerRegistration(String fname, String lname, String email, String mobile, String pinCode, String city,
+	public CustomerRegistration(String fname, String lname, String email, String mobile, String pincode, String city,
 			String adharNo, String addharFile, byte[] adharFileContent) {
 		super();
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
 		this.mobile = mobile;
-		this.pincode = pinCode;
+		this.pincode = pincode;
 		this.city = city;
 		this.adharNo = adharNo;
 		this.adharFileName = addharFile;
@@ -81,12 +83,12 @@ public class CustomerRegistration {
 		this.mobile = mobile;
 	}
 
-	public String getPinCode() {
+	public String getPincode() {
 		return pincode;
 	}
 
-	public void setPinCode(String pinCode) {
-		this.pincode = pinCode;
+	public void setPincode(String pincode) {
+		this.pincode = pincode;
 	}
 
 	public String getCity() {

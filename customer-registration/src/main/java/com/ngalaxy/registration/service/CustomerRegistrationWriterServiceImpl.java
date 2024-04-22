@@ -99,8 +99,8 @@ public class CustomerRegistrationWriterServiceImpl implements CustomerRegistrati
 				dbCustomerRegistration.setMobile(userCustomerRegistration.getMobile());
 			}
 
-			if (userCustomerRegistration.getPinCode() != null && !userCustomerRegistration.getPinCode().isEmpty()) {
-				dbCustomerRegistration.setPinCode(userCustomerRegistration.getPinCode());
+			if (userCustomerRegistration.getPincode() != null && !userCustomerRegistration.getPincode().isEmpty()) {
+				dbCustomerRegistration.setPincode(userCustomerRegistration.getPincode());
 			}
 
 			if (userCustomerRegistration.getCity() != null && !userCustomerRegistration.getCity().isEmpty()) {
