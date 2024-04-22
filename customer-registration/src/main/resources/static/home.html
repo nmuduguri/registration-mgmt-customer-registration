@@ -31,35 +31,18 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      margin: 10px;
+      margin: 20px 10px; /* Adjust this value to add space between buttons */
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <h2>Welcome to Home Page</h2>
+    <h2>Welcome to The Family Hostels</h2>
+    <br> <!-- Add line break -->
     <a href="registration.html" class="btn">Register</a>
     <a href="login.html" class="btn">Login</a>
   </div>
 
-  <script>
-    // JavaScript code
-    document.addEventListener('DOMContentLoaded', function() {
-      const registerBtn = document.querySelector('.register-btn');
-      if (registerBtn) {
-        registerBtn.addEventListener('click', function() {
-          window.location.href = 'registration.html';
-        });
-      }
-
-      const loginBtn = document.querySelector('.login-btn');
-      if (loginBtn) {
-        loginBtn.addEventListener('click', function() {
-          window.location.href = 'login.html';
-        });
-      }
-    });
-  </script>
 </body>
 </html>
