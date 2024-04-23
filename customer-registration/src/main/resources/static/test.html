@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Reader</title>
+  <style>
+    /* CSS styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+    }
+    input[type="file"] {
+      margin-bottom: 10px;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: none;
+    }
+    button[type="submit"] {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: block;
+      margin: 20px auto 0;
+    }
+    #imagePreview {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>File Reader</h2>
+    <form id="fileForm" enctype="multipart/form-data">
+      <input type="file" id="fileInput" name="fileInput" accept=".pdf, .jpg, .jpeg" onchange="readFile(event)" required>
+      <div id="previewContainer"></div>
+      <textarea id="fileContent" readonly></textarea>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    function readFile(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function(event) {
+        const fileDataUrl = event.target.result;
+        const previewContainer = document.getElementById('previewContainer');
+        const fileContent = document.getElementById('fileContent');
+
+        if (file.type === 'application/pdf') {
+          // Read PDF content
+          const pdfjsLib = window['pdfjs-dist/build/pdf'];
+          pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.worker.min.js';
+          pdfjsLib.getDocument(fileDataUrl).promise.then(function(pdf) {
+            pdf.getPage(1).then(function(page) {
+              page.getTextContent().then(function(textContent) {
+                const text = textContent.items.map(function(item) {
+                  return item.str;
+                }).join(' ');
+                fileContent.value = text;
+              });
+            });
+          });
+        } else if (file.type === 'image/jpeg' || file.type === 'image/jpg') {
+          // Display image
+          const img = document.createElement('img');
+          img.src = fileDataUrl;
+          img.id = 'imagePreview';
+          previewContainer.innerHTML = '';
+          previewContainer.appendChild(img);
+          fileContent.value = 'Image file: ' + file.name;
+        } else {
+          // Unsupported file type
+          fileContent.value = 'Unsupported file type. Please select a PDF or image file.';
+        }
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+    document.getElementById('fileForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const fileContent = document.getElementById('fileContent').value;
+      alert('File content:\n' + fileContent);
+      // You can do further processing here, like sending the text content to the server
+    });
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
+</body>
+</html>

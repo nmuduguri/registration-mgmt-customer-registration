@@ -83,26 +83,37 @@
   </div>
 
   <script>
-    // JavaScript code
     document.getElementById('loginForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-      var form = event.target;
-      var formData = new FormData(form);
+     event.preventDefault();
+     var form = event.target;
+     var formData = new FormData(form);
 
-      fetch('http://localhost:8080/api/login', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById('responseMessage').innerText = data.message;
-        form.reset();
-      })
-      .catch(error => {
-        document.getElementById('responseMessage').innerText = 'An error occurred while processing your request.';
-        console.error('Error:', error);
-      });
-    });
+     fetch('http://localhost:8080/api/login-mgmt/login', {
+         method: 'POST',
+         body: formData
+     })
+     .then(response => {
+         if (response.ok) {
+             // Extract email from form data
+             const email = formData.get('email');
+             // Store email in local storage
+             localStorage.setItem('userEmail', email);
+             // Redirect to dashboard upon successful login
+             window.location.href = 'dashboard.html';
+         } else {
+             // Display error message
+             return response.json().then(data => {
+                 document.getElementById('responseMessage').innerText = data.message;
+             });
+         }
+     })
+     .catch(error => {
+         document.getElementById('responseMessage').innerText = 'An error occurred while processing your request.';
+         console.error('Error:', error);
+     });
+ });
+
   </script>
+
 </body>
 </html>

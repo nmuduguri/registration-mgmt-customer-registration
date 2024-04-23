@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Management - Admin Dashboard</title>
+    <style>
+        /* CSS styles */
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+        }
+        header {
+          background-color: #007bff;
+          color: #fff;
+          padding: 20px;
+          text-align: center;
+        }
+        nav {
+          background-color: #f4f4f4;
+          padding: 10px 0;
+          text-align: center;
+        }
+        nav a {
+          color: #007bff;
+          text-decoration: none;
+          margin: 0 15px;
+        }
+        main {
+          padding: 20px;
+        }
+        .data-list {
+          list-style: none;
+          padding: 0;
+          margin-top: 20px;
+        }
+        .data-list li {
+          padding: 10px;
+          border-bottom: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Welcome to Galaxy Hostels</h1>
+</header>
+
+<nav>
+    <select id="branchDropdown" onchange="loadDataForSelectedBranch()">
+        <option value="" disabled selected>Select Branch</option>
+        <option value="branch1">Branch 1</option>
+        <option value="branch2">Branch 2</option>
+        <option value="branch3">Branch 3</option>
+        <!-- Add more branches as needed -->
+    </select>
+    <a href="#" onclick="loadDashboard()">Dashboard</a>
+    <a href="#" onclick="loadStudents()">Students</a>
+    <a href="#" onclick="loadRooms()">Rooms</a>
+    <a href="#" onclick="loadFees()">Fees</a>
+    <a href="#" onclick="loadComplaints()">Complaints</a>
+    <a href="#" onclick="loadVisitors()">Visitors</a>
+    <a href="#" onclick="loadReports()">Reports</a>
+    <a href="#" onclick="loadSettings()">Settings</a>
+    <a href="#" onclick="logout()">Logout</a>
+</nav>
+
+<main id="main-content">
+    <!-- Content will be loaded here -->
+</main>
+
+<script>
+
+    function loadDataForSelectedBranch() {
+    const email = localStorage.getItem('userEmail');
+    const selectedBranch = document.getElementById('branchDropdown').value;
+
+    // Make sure both email and branch are selected
+    if (email && selectedBranch) {
+        // Construct the request body
+        const requestBody = {
+            email: email,
+            branch: selectedBranch
+        };
+
+        // Make a POST request to your Spring Boot API
+        fetch('http://localhost:8080/api/getBranchDetails', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Failed to fetch branch details');
+            }
+        })
+        .then(data => {
+            // Display the fetched branch details
+            displayData(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Display an error message to the user
+            displayData({ message: 'An error occurred while fetching branch details' });
+        });
+    } else {
+        // Display an error message if email or branch is not selected
+        displayData({ message: 'Please provide both email and select a branch' });
+    }
+}
+
+
+    function loadDashboard() {
+      // Placeholder service call for dashboard data
+      const data = { message: 'This is the Dashboard page' };
+      displayData(data);
+    }
+
+    function loadStudents() {
+      // Placeholder service call for students data
+      const data = [
+        { name: 'John Doe', age: 20, gender: 'Male' },
+        { name: 'Jane Smith', age: 22, gender: 'Female' }
+      ];
+      displayData(data);
+    }
+
+    function loadRooms() {
+      // Placeholder service call for rooms data
+      const data = [
+        { roomNumber: '101', type: 'Single', status: 'Occupied' },
+        { roomNumber: '102', type: 'Double', status: 'Vacant' }
+      ];
+      displayData(data);
+    }
+
+    function loadFees() {
+      // Placeholder service call for fees data
+      const data = [
+        { student: 'John Doe', amount: '$100' },
+        { student: 'Jane Smith', amount: '$150' }
+      ];
+      displayData(data);
+    }
+
+    function loadComplaints() {
+      // Placeholder service call for complaints data
+      const data = [
+        { title: 'No hot water', status: 'Pending' },
+        { title: 'Broken window', status: 'Resolved' }
+      ];
+      displayData(data);
+    }
+
+    function loadVisitors() {
+      // Placeholder service call for visitors data
+      const data = [
+        { name: 'Visitor 1', purpose: 'Meeting' },
+        { name: 'Visitor 2', purpose: 'Delivery' }
+      ];
+      displayData(data);
+    }
+
+    function loadReports() {
+      // Placeholder service call for reports data
+      const data = [
+        { title: 'Occupancy Report', date: '2022-04-15' },
+        { title: 'Fee Collection Report', date: '2022-04-16' }
+      ];
+      displayData(data);
+    }
+
+    function loadSettings() {
+      // Placeholder service call for settings data
+      const data = { theme: 'Dark', language: 'English' };
+      displayData(data);
+    }
+
+    function logout() {
+      // Placeholder for logout functionality
+      alert('Logout');
+    }
+
+    function displayData(data) {
+      const mainContent = document.getElementById('main-content');
+      mainContent.innerHTML = '';
+      if (Array.isArray(data)) {
+        const dataList = document.createElement('ul');
+        dataList.classList.add('data-list');
+        data.forEach(item => {
+          const listItem = document.createElement('li');
+          listItem.textContent = JSON.stringify(item);
+          dataList.appendChild(listItem);
+        });
+        mainContent.appendChild(dataList);
+      } else {
+        const message = document.createElement('p');
+        message.textContent = data.message;
+        mainContent.appendChild(message);
+      }
+    }
+
+    // Initially load the dashboard
+    loadDashboard();
+</script>
+</body>
+</html>
