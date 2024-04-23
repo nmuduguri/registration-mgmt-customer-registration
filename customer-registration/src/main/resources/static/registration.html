@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Registration</title>
+  <style>
+    /* CSS styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+    }
+    form {
+      display: grid;
+      grid-gap: 10px;
+    }
+    label {
+      font-weight: bold;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="password"],
+    input[type="file"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button[type="submit"] {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 0 auto; /* Center the button */
+      display: block; /* Ensure it takes full width */
+    }
+    #responseMessage {
+      margin-top: 10px;
+      text-align: center;
+      color: green; /* Change the color to green */
+    }
+    .back-btn {
+      display: inline-block;
+      margin-top: 20px;
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    .error-message {
+      color: red;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Customer Registration</h2>
+    <form id="registrationForm" enctype="multipart/form-data">
+      <div>
+        <label for="fname">First Name:</label>
+        <input type="text" id="fname" name="fname" pattern="[A-Za-z]{1,20}" title="First name should contain only alphabets (1-20 characters)" required>
+        <div class="error-message" id="fnameError"></div>
+      </div>
+      <div>
+        <label for="lname">Last Name:</label>
+        <input type="text" id="lname" name="lname" pattern="[A-Za-z]{1,20}" title="Last name should contain only alphabets (1-20 characters)" required>
+        <div class="error-message" id="lnameError"></div>
+      </div>
+      <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" pattern="^(?=.*[0-9])[a-zA-Z0-9]{6,}$" title="Password should contain alphabets and at least one number (6 characters minimum)" required>
+        <div class="error-message" id="passwordError"></div>
+      </div>
+      <div>
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" pattern="^(?=.*[0-9])[a-zA-Z0-9]{6,}$" title="Confirm password should match the password" required>
+        <div class="error-message" id="confirmPasswordError"></div>
+      </div>
+      <div>
+        <label for="mobile">Mobile:</label>
+        <input type="tel" id="mobile" name="mobile" pattern="[0-9]{10}" title="Mobile number should contain only digits (10 digits)" required>
+        <div class="error-message" id="mobileError"></div>
+      </div>
+      <div>
+        <label for="pincode">Pincode:</label>
+        <input type="text" id="pincode" name="pincode" pattern="[0-9]{6}" title="Pincode should contain only digits (6 digits)" required>
+        <div class="error-message" id="pincodeError"></div>
+      </div>
+      <div>
+        <label for="city">City:</label>
+        <input type="text" id="city" name="city" pattern="[A-Za-z]{1,20}" title="City should contain only alphabets (1-20 characters)" required>
+        <div class="error-message" id="cityError"></div>
+      </div>
+      <div>
+        <label for="adharNo">Aadhar Number:</label>
+        <input type="text" id="adharNo" name="adharNo" pattern="[0-9]{12}" title="Aadhar number should contain only digits (12 digits)" required>
+        <div class="error-message" id="adharNoError"></div>
+      </div>
+      <div>
+        <label for="adharFile">Aadhar File:</label>
+        <input type="file" id="adharFile" name="adharFile" accept=".pdf, .jpg, .jpeg, .png" required>
+        <div class="error-message" id="adharFileError"></div>
+      </div>
+      <div>
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+    <div id="responseMessage"></div>
+    <a href="home.html" class="back-btn">Back to Home</a>
+  </div>
+
+  <script>
+    // JavaScript code
+    document.getElementById('registrationForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      var form = event.target;
+      var valid = true;
+
+      // Validation for First Name
+      var fnameInput = form.elements.fname;
+      var fnameError = document.getElementById('fnameError');
+      if (!fnameInput.validity.valid) {
+        fnameError.textContent = 'Please enter a valid First Name.';
+        valid = false;
+      } else {
+        fnameError.textContent = '';
+      }
+
+      // Validation for Last Name
+      var lnameInput = form.elements.lname;
+      var lnameError = document.getElementById('lnameError');
+      if (!lnameInput.validity.valid) {
+        lnameError.textContent = 'Please enter a valid Last Name.';
+        valid = false;
+      } else {
+        lnameError.textContent = '';
+      }
+
+      // Validation for Password
+      var passwordInput = form.elements.password;
+      var passwordError = document.getElementById('passwordError');
+      if (!passwordInput.validity.valid) {
+        passwordError.textContent = 'Please enter a valid Password.';
+        valid = false;
+      } else {
+        passwordError.textContent = '';
+      }
+
+      // Validation for Confirm Password
+      var confirmPasswordInput = form.elements.confirmPassword;
+      var confirmPasswordError = document.getElementById('confirmPasswordError');
+      if (!confirmPasswordInput.validity.valid || confirmPasswordInput.value !== form.elements.password.value) {
+        confirmPasswordError.textContent = 'Please enter a valid Confirm Password.';
+        valid = false;
+      } else {
+        confirmPasswordError.textContent = '';
+      }
+
+      // Validation for Mobile
+      var mobileInput = form.elements.mobile;
+      var mobileError = document.getElementById('mobileError');
+      if (!mobileInput.validity.valid) {
+        mobileError.textContent = 'Please enter a valid Mobile number.';
+        valid = false;
+      } else {
+        mobileError.textContent = '';
+      }
+
+      // Validation for Pincode
+      var pincodeInput = form.elements.pincode;
+      var pincodeError = document.getElementById('pincodeError');
+      if (!pincodeInput.validity.valid) {
+        pincodeError.textContent = 'Please enter a valid Pincode.';
+        valid = false;
+      } else {
+        pincodeError.textContent = '';
+      }
+
+      // Validation for City
+      var cityInput = form.elements.city;
+      var cityError = document.getElementById('cityError');
+      if (!cityInput.validity.valid) {
+        cityError.textContent = 'Please enter a valid City.';
+        valid = false;
+      } else {
+        cityError.textContent = '';
+      }
+
+      // Validation for Aadhar Number
+      var adharNoInput = form.elements.adharNo;
+      var adharNoError = document.getElementById('adharNoError');
+      if (!adharNoInput.validity.valid) {
+        adharNoError.textContent = 'Please enter a valid Aadhar Number.';
+        valid = false;
+      } else {
+        adharNoError.textContent = '';
+      }
+
+      // Validation for Aadhar File
+      var adharFileInput = form.elements.adharFile;
+      var adharFileError = document.getElementById('adharFileError');
+      if (adharFileInput.files.length > 0 && adharFileInput.files[0].size > 6000000) {
+        adharFileError.textContent = 'File size exceeds the limit (6 MB maximum)';
+        valid = false;
+      } else {
+        adharFileError.textContent = '';
+      }
+
+      if (valid) {
+        var formData = new FormData(form);
+
+        fetch('http://localhost:8080/api/registration-mgmt/customer-registration', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('responseMessage').innerText = data.message;
+          form.reset();
+        })
+        .catch(error => {
+          document.getElementById('responseMessage').innerText = 'An error occurred while processing your request.';
+          console.error('Error:', error);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

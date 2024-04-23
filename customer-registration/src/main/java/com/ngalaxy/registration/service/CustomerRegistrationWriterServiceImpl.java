@@ -1,28 +1,44 @@
 package com.ngalaxy.registration.service;
 
-import java.util.List;
+import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ngalaxy.registration.model.CustomerRegistration;
 import com.ngalaxy.registration.repository.CustomerRegistrationRepository;
 import com.ngalaxy.registration.response.CustomerRegistrationResponse;
 
 @Service
-public class CustomerRegistrationService {
+public class CustomerRegistrationWriterServiceImpl implements CustomerRegistrationWriterService {
+
 	@Autowired
 	CustomerRegistrationRepository customerRegistrationRepository;
 
-	public CustomerRegistrationResponse saveCustomerRegistration(CustomerRegistration customer) {
+	@Override
+	public CustomerRegistrationResponse saveCustomerRegistration(CustomerRegistration customer,
+			MultipartFile adharFile) {
 
 		CustomerRegistration cust = null;
+		CustomerRegistrationResponse validateResponse = validateAdharFile(adharFile);
+		if (validateResponse != null) {
+			return new CustomerRegistrationResponse("1007",
+					"Please upload valid file :" + adharFile.getOriginalFilename());
+		}
+
 		if (customer != null && customer.getEmail() != null && !customer.getEmail().isEmpty()) {
 
 			cust = customerRegistrationRepository.findByEmail(customer.getEmail());
 		}
 		if (cust == null) {
+			customer.setAdharFileName(adharFile.getOriginalFilename());
+			try {
+				customer.setAdharFileContent(adharFile.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			customerRegistrationRepository.save(customer);
 			return new CustomerRegistrationResponse("200", "Customer Registration Saved Successfully");
 		} else {
@@ -32,22 +48,24 @@ public class CustomerRegistrationService {
 
 	}
 
-	public List<CustomerRegistration> getRegisteredCustomers() {
-		return customerRegistrationRepository.findAll();
-	}
+	private CustomerRegistrationResponse validateAdharFile(MultipartFile adharFile) {
+		try {
+			if (adharFile == null || (adharFile != null && adharFile.getBytes() == null)) {
+				return new CustomerRegistrationResponse("1007",
+						"Please upload valid file :" + adharFile.getOriginalFilename());
+			}
 
-	public CustomerRegistration getRegisteredCustomer(Integer custId) throws IllegalArgumentException {
-
-		CustomerRegistration customerRegistration = null;
-		if (custId != null && custId > 0) {
-			customerRegistration = customerRegistrationRepository.findById(custId).get();
-		} else {
-			throw new IllegalArgumentException("Please Provide Valid Customer Id");
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return customerRegistration;
+
+		return null;
+
 	}
 
-	public CustomerRegistrationResponse updateCustomerRegistration(CustomerRegistration userCustomerRegistration) {
+	@Override
+	public CustomerRegistrationResponse updateCustomerRegistration(CustomerRegistration userCustomerRegistration,
+			MultipartFile adharFile) {
 
 		CustomerRegistrationResponse response = null;
 		CustomerRegistration dbCustomerRegistration = new CustomerRegistration();
@@ -81,8 +99,8 @@ public class CustomerRegistrationService {
 				dbCustomerRegistration.setMobile(userCustomerRegistration.getMobile());
 			}
 
-			if (userCustomerRegistration.getPinCode() != null && !userCustomerRegistration.getPinCode().isEmpty()) {
-				dbCustomerRegistration.setPinCode(userCustomerRegistration.getPinCode());
+			if (userCustomerRegistration.getPincode() != null && !userCustomerRegistration.getPincode().isEmpty()) {
+				dbCustomerRegistration.setPincode(userCustomerRegistration.getPincode());
 			}
 
 			if (userCustomerRegistration.getCity() != null && !userCustomerRegistration.getCity().isEmpty()) {
@@ -93,8 +111,13 @@ public class CustomerRegistrationService {
 				dbCustomerRegistration.setAdharNo(userCustomerRegistration.getAdharNo());
 			}
 
-			if (userCustomerRegistration.getAdharFile() != null && !userCustomerRegistration.getAdharFile().isEmpty()) {
-				dbCustomerRegistration.setAdharFile(userCustomerRegistration.getAdharFile());
+			if (adharFile != null) {
+				dbCustomerRegistration.setAdharFileName(adharFile.getOriginalFilename());
+				try {
+					dbCustomerRegistration.setAdharFileContent(adharFile.getBytes());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 			customerRegistrationRepository.save(dbCustomerRegistration);
 
