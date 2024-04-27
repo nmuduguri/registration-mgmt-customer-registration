@@ -105,16 +105,6 @@
         <div class="error-message" id="mobileError"></div>
       </div>
       <div>
-        <label for="pincode">Pincode:</label>
-        <input type="text" id="pincode" name="pincode" pattern="[0-9]{6}" title="Pincode should contain only digits (6 digits)" required>
-        <div class="error-message" id="pincodeError"></div>
-      </div>
-      <div>
-        <label for="city">City:</label>
-        <input type="text" id="city" name="city" pattern="[A-Za-z]{1,20}" title="City should contain only alphabets (1-20 characters)" required>
-        <div class="error-message" id="cityError"></div>
-      </div>
-      <div>
         <label for="adharNo">Aadhar Number:</label>
         <input type="text" id="adharNo" name="adharNo" pattern="[0-9]{12}" title="Aadhar number should contain only digits (12 digits)" required>
         <div class="error-message" id="adharNoError"></div>
@@ -187,26 +177,6 @@
         valid = false;
       } else {
         mobileError.textContent = '';
-      }
-
-      // Validation for Pincode
-      var pincodeInput = form.elements.pincode;
-      var pincodeError = document.getElementById('pincodeError');
-      if (!pincodeInput.validity.valid) {
-        pincodeError.textContent = 'Please enter a valid Pincode.';
-        valid = false;
-      } else {
-        pincodeError.textContent = '';
-      }
-
-      // Validation for City
-      var cityInput = form.elements.city;
-      var cityError = document.getElementById('cityError');
-      if (!cityInput.validity.valid) {
-        cityError.textContent = 'Please enter a valid City.';
-        valid = false;
-      } else {
-        cityError.textContent = '';
       }
 
       // Validation for Aadhar Number
